@@ -13,12 +13,41 @@ namespace SPINLaderboardMVVM.ViewModel
 {
     public class ApplicationViewModel
     {
+        public ObservableCollection<SPINUser> SPINUsers { get; set; }
+        public ICollectionView SPINUsersView { get; private set; }
         readonly static WebClient wc = new WebClient();
         readonly TimerCallback tm = new TimerCallback(DownloadString);
         readonly Timer timer;
-        bool isdata = true;
-
+        bool isfilterenabled = true;
+        bool filtertype = true;
         string filter = "";
+
+        public bool IsFilterEnabled
+        {
+            get
+            {
+                return isfilterenabled;
+            }
+            set
+            {
+                isfilterenabled = value;
+                FilterData();
+            }
+        }
+
+        public bool FilterType
+        {
+            get
+            {
+                return filtertype;
+            }
+            set
+            {
+                filtertype = value;
+                FilterData();
+            }
+        }
+
         public string Filter
         {
             get
@@ -28,11 +57,9 @@ namespace SPINLaderboardMVVM.ViewModel
             set
             {
                 filter = value;
+                FilterData();
             }
         }
-
-        public ObservableCollection<SPINUser> SPINUsers { get; set; }
-        public ICollectionView SPINUsersView { get; private set; }
 
         public ApplicationViewModel()
         {
@@ -58,22 +85,21 @@ namespace SPINLaderboardMVVM.ViewModel
 
         private bool OnFilterTriggered(object item)
         {
-            if (item is SPINUser user)
+            if (isfilterenabled)
             {
-                if (isdata)
+                if (item is SPINUser user)
                 {
-                    return (DateTime.UtcNow - user.LastChange.ToUniversalTime()).TotalMinutes <= 5;
-                }
-                else
-                {
-                    if (Filter == "") return true;
+                    if (filtertype)
+                    {
+                        return (DateTime.UtcNow - user.LastChange.ToUniversalTime()).TotalMinutes <= 5;
+                    }
                     else
                     {
                         return Filter.ToLower().Contains(user.Name.ToLower());
                     }
                 }
             }
-            else return true;
+            return true;
         }
 
         public void FilterData()

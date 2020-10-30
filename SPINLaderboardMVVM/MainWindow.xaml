@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SPINLaderboardMVVM"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SPINLaderboard" Height="450" Width="800">
     <Grid>
         <DataGrid x:Name="AllUsersDataGrid" HorizontalAlignment="Left" ItemsSource="{Binding SPINUsers}" AutoGenerateColumns="False" CanUserAddRows="False" Height="346" Margin="23,53,0,0" VerticalAlignment="Top" Width="748">
             <DataGrid.Columns>
@@ -16,5 +15,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <TextBox x:Name="FilterStringTextBox" Text="{Binding Filter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="23,22,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="137"/>
+        <CheckBox Content="Включить фильтр" IsChecked="{Binding IsFilterEnabled}" HorizontalAlignment="Left" Margin="179,27,0,0" VerticalAlignment="Top"/>
+        <CheckBox Content="Тип фильтра" IsChecked="{Binding FilterType}"  HorizontalAlignment="Left" Margin="307,30,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
